@@ -1,6 +1,6 @@
+import { onMounted } from 'vue';
 import useQuery from './useQuery';
 import type { Service, Options, Plugin, Result } from './types';
-import { onMounted, toRef } from 'vue';
 
 function useRequestImplement<TData, TParams extends any[]>(
   service: Service<TData, TParams>,
@@ -10,9 +10,10 @@ function useRequestImplement<TData, TParams extends any[]>(
   const { manual = false, defaultParams = [] } = options;
 
   const queryInstance = useQuery(service, options);
-  // 这样貌似也能保证正常的响应式，按理说解构应该是不行的。
-  // const { params } = queryInstance;
-  const params = toRef(queryInstance, 'params');
+  queryInstance.pluginImpls.value = plugins.map((plugin) =>
+    plugin(queryInstance, options)
+  );
+  console.log('🏄 ---- queryInstance', queryInstance);
 
   // 默认的自动请求
   onMounted(() => {
@@ -29,7 +30,12 @@ function useRequestImplement<TData, TParams extends any[]>(
     data: queryInstance.data,
     error: queryInstance.error,
 
+    // 用一层 context 包裹确实更有助于区分吧（state、action）
+    runAsync: queryInstance.runAsync,
     run: queryInstance.run,
+    cancel: queryInstance.cancel,
+    refreshAsync: queryInstance.refreshAsync,
+    refresh: queryInstance.refresh,
   };
 }
 
