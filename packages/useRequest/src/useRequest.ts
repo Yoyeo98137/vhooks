@@ -1,4 +1,5 @@
 import useRequestImplement from './useRequestImplement';
+import { useLoadingDelayPlugin } from './plugins';
 import type { Service, Options } from './types';
 
 // or unknown[] ?
@@ -8,7 +9,7 @@ function useRequest<TData, TParams extends unknown[]>(
 ) {
   return useRequestImplement<TData, TParams>(service, options, [
     // useDebouncePlugin,
-    // useLoadingDelayPlugin,
+    useLoadingDelayPlugin,
     // usePollingPlugin,
     // useRefreshOnWindowFocusPlugin,
     // useThrottlePlugin,
