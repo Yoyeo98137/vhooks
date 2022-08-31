@@ -45,6 +45,20 @@ module.exports = {
     }
   ],
 
+  // @see: https://juejin.cn/post/7039256801899970568
+  scopes: [
+    ['useRequest', 'hooks —— useRequest 相关'],
+
+    // `allowCustomScopes: true,`
+    // empty
+    // custom
+  ].map(([value, description]) => {
+    return {
+      value,
+      name: `${value.padEnd(30)} (${description})`
+    }
+  }),
+
   messages: {
     type: '请选择提交的类型；',
     customScope: '请输入修改的范围（可选）',
