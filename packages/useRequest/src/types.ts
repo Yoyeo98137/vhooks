@@ -1,4 +1,4 @@
-import type { Ref, WatchSource } from 'vue';
+import type { Ref, WatchSource } from "vue";
 
 // extends unknown[] -> 因为要给 ...args 定义数组类型（类数组）
 export type Service<TData, TParams extends any[]> = (
@@ -41,26 +41,52 @@ export type State<TData, TParams> = {
 };
 
 export interface Action<TData, TParams extends unknown[]> {
-  // runAsync: (...arg: TParams) => Promise<TData>;
+  runAsync: (...arg: TParams) => Promise<TData>;
   run: (...arg: TParams) => void;
-  // cancel: () => void;
-  // refresh: () => void;
-  // refreshAsync: () => Promise<TData>;
+  cancel: () => void;
+  refresh: () => void;
+  refreshAsync: () => Promise<TData>;
   // mutate: Mutate<TData>;
 }
 
 export type Result<TData, TParams extends unknown[]> = State<TData, TParams> &
   Action<TData, TParams>;
 
+export type RefPluginImpls<TData, TParams extends unknown[]> = Ref<
+  PluginReturn<TData, TParams>[]
+>;
+export type QueryResult<TData, TParams extends unknown[]> = Result<
+  TData,
+  TParams
+> & {
+  pluginImpls: RefPluginImpls<TData, TParams>;
+};
+
 export type Plugin<TData, TParams extends any[]> = {
   (
-    queryInstance: Service<TData, TParams>,
+    queryInstance: QueryResult<TData, TParams>,
     options: Options<TData, TParams>
   ): Partial<PluginReturn<TData, TParams>>;
 };
 
 export interface PluginReturn<TData, TParams extends any[]> {
-  onSuccess: (data: TData, params: TParams) => void;
-  onError: (err: Error, params: TParams) => void;
-  onFinally: (params: TParams, data?: TData, err?: Error) => void;
+  // onBefore?: (params: TParams) =>
+  //   | ({
+  //       stopNow?: boolean;
+  //       returnNow?: boolean;
+  //     } & Partial<FetchState<TData, TParams>>)
+  //   | void;
+
+  // onRequest?: (
+  //   service: Service<TData, TParams>,
+  //   params: TParams,
+  // ) => {
+  //   servicePromise?: Promise<TData>;
+  // };
+
+  onSuccess?: (data: TData, params: TParams) => void;
+  onError?: (e: Error, params: TParams) => void;
+  onFinally?: (params: TParams, data?: TData, e?: Error) => void;
+  onCancel?: () => void;
+  onMutate?: (data: TData) => void;
 }
