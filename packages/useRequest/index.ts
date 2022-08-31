@@ -1,6 +1,1 @@
-import useRequest from './src/useRequest';
-
-// export * from './src/types';
-// export * from './src/tool';
-
-export { useRequest };
+export { default as useRequest } from "./src/useRequest";
