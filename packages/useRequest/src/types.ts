@@ -1,4 +1,5 @@
-import type { Ref, WatchSource } from "vue";
+import type { Ref, WatchSource } from 'vue';
+import type { UnWrapRefObject } from '../../utils/types';
 
 // extends unknown[] -> 因为要给 ...args 定义数组类型（类数组）
 export type Service<TData, TParams extends any[]> = (
@@ -60,7 +61,10 @@ export type QueryResult<TData, TParams extends unknown[]> = Result<
   TParams
 > & {
   pluginImpls: RefPluginImpls<TData, TParams>;
+  setState: (newState: Partial<UnWrapRefObject<State<any, any>>>) => void;
 };
+
+// todo 整合一下
 
 export type Plugin<TData, TParams extends any[]> = {
   (
@@ -68,14 +72,41 @@ export type Plugin<TData, TParams extends any[]> = {
     options: Options<TData, TParams>
   ): Partial<PluginReturn<TData, TParams>>;
 };
+export type PluginUnRefs<TData, TParams extends any[]> = {
+  (
+    queryInstance: QueryResult<TData, TParams>,
+    options: Options<TData, TParams>
+  ): Partial<PluginUnRefsReturn<TData, TParams>>;
+};
 
 export interface PluginReturn<TData, TParams extends any[]> {
-  // onBefore?: (params: TParams) =>
-  //   | ({
-  //       stopNow?: boolean;
-  //       returnNow?: boolean;
-  //     } & Partial<FetchState<TData, TParams>>)
-  //   | void;
+  onBefore?: (params: TParams) =>
+    | ({
+        stopNow?: boolean;
+        returnNow?: boolean;
+      } & Partial<State<TData, TParams>>)
+    | void;
+
+  // onRequest?: (
+  //   service: Service<TData, TParams>,
+  //   params: TParams,
+  // ) => {
+  //   servicePromise?: Promise<TData>;
+  // };
+
+  onSuccess?: (data: TData, params: TParams) => void;
+  onError?: (e: Error, params: TParams) => void;
+  onFinally?: (params: TParams, data?: TData, e?: Error) => void;
+  onCancel?: () => void;
+  onMutate?: (data: TData) => void;
+}
+export interface PluginUnRefsReturn<TData, TParams extends any[]> {
+  onBefore?: (params: TParams) =>
+    | ({
+        stopNow?: boolean;
+        returnNow?: boolean;
+      } & Partial<UnWrapRefObject<State<TData, TParams>>>)
+    | void;
 
   // onRequest?: (
   //   service: Service<TData, TParams>,

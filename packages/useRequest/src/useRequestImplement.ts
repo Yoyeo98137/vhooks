@@ -13,7 +13,6 @@ function useRequestImplement<TData, TParams extends any[]>(
   queryInstance.pluginImpls.value = plugins.map((plugin) =>
     plugin(queryInstance, options)
   );
-  console.log('🏄 ---- queryInstance', queryInstance);
 
   // 默认的自动请求
   onMounted(() => {

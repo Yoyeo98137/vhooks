@@ -7,7 +7,7 @@ function useRequest<TData, TParams extends unknown[]>(
   service: Service<TData, TParams>,
   options?: Options<TData, TParams>
 ) {
-  return useRequestImplement<TData, TParams>(service, options, [
+  const basePlugins = [
     // useDebouncePlugin,
     useLoadingDelayPlugin,
     // usePollingPlugin,
@@ -16,7 +16,14 @@ function useRequest<TData, TParams extends unknown[]>(
     // useAutoRunPlugin,
     // useCachePlugin,
     // useRetryPlugin,
-  ]);
+  ];
+
+  return useRequestImplement<TData, TParams>(
+    service,
+    options,
+    // @ts-ignore
+    [...basePlugins]
+  );
 }
 
 export default useRequest;
