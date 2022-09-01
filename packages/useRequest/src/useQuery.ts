@@ -55,14 +55,14 @@ function useQuery<TData, TParams extends unknown[]>(
   };
 
   const runAsync = async (...args: TParams) => {
+    const { ...state } = notifyPluginHook('onBefore', params);
+    onBefore?.(args);
+
     setState({
       loading: true,
       params: args,
-
-      // todo 通过扩展参数来方便插件内部的赋值？（`onBefore`）
+      ...state,
     });
-
-    onBefore?.(args);
 
     try {
       const serviceContext = () => Promise.resolve(service(...params.value));
@@ -149,6 +149,8 @@ function useQuery<TData, TParams extends unknown[]>(
     cancel,
     refresh,
     refreshAsync,
+
+    setState,
   };
 }
 
