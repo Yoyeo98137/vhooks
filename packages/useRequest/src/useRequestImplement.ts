@@ -1,4 +1,4 @@
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import useQuery from './useQuery';
 import type { Service, Options, Plugin, Result } from './types';
 
@@ -21,6 +21,10 @@ function useRequestImplement<TData, TParams extends any[]>(
       const runParams = queryInstance.params.value || defaultParams;
       queryInstance.run(...runParams);
     }
+  });
+
+  onUnmounted(() => {
+    queryInstance.cancel();
   });
 
   return {

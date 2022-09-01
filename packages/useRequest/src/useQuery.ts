@@ -31,6 +31,9 @@ function useQuery<TData, TParams extends unknown[]>(
   const data = ref(initState?.data);
   const error = ref(initState?.error);
 
+  // 大致用来区分请求的时机
+  const count = ref(0);
+
   const setState = batchUpdateRefs({
     loading,
     data,
@@ -54,7 +57,10 @@ function useQuery<TData, TParams extends unknown[]>(
     return Object.assign({}, ...res);
   };
 
-  const runAsync = async (...args: TParams) => {
+  const runAsync: (...args: TParams) => Promise<TData> = async (...args) => {
+    count.value += 1;
+    const currentCount = count.value;
+
     const { ...state } = notifyPluginHook('onBefore', params);
     onBefore?.(args);
 
@@ -80,6 +86,13 @@ function useQuery<TData, TParams extends unknown[]>(
 
       const res = await servicePromise;
 
+      if (currentCount !== count.value) {
+        // 避免离开的时候，继续执行了 run.then 完成之后的逻辑
+        // prevent run.then when request is canceled
+        return new Promise(() => {});
+        // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作
+      }
+
       setState({
         data: res,
         error: undefined,
@@ -96,6 +109,13 @@ function useQuery<TData, TParams extends unknown[]>(
 
       // if Error
     } catch (error) {
+      if (currentCount !== count.value) {
+        // 避免离开的时候，继续执行了 run.then 完成之后的逻辑
+        // prevent run.then when request is canceled
+        return new Promise(() => {});
+        // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作
+      }
+
       setState({
         error,
         loading: false,
@@ -121,6 +141,7 @@ function useQuery<TData, TParams extends unknown[]>(
   };
 
   const cancel = () => {
+    count.value += 1;
     setState({
       loading: false,
     });
