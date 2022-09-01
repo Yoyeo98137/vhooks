@@ -1,10 +1,9 @@
-<script setup lang="ts">
-import DemoUseRequest from './src/DemoUseRequest.vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <ElMain>
-    <DemoUseRequest />
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view />
   </ElMain>
 </template>
 

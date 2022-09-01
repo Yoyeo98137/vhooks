@@ -2,27 +2,24 @@
 import { ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { useRequest } from '@/packages';
+import Mock from 'mockjs';
 
 // ---------------------- 默认用法
 function getUsername(): Promise<string> {
   return new Promise((resolve) => {
     setTimeout(() => {
-      resolve('yeo');
-    }, 1280);
+      resolve(Mock.mock('@name'));
+    }, 660);
   });
 }
-const { data, loading } = useRequest(getUsername, {
-  onSuccess: (data) => {
-    console.log('🏄 ---- onSuccess ---- data', data);
-  },
-});
+const { data, loading } = useRequest(getUsername);
 
 // ---------------------- 手动触发
 function changeUsername(username: string): Promise<{ success: boolean }> {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({ success: true });
-    }, 1000);
+    }, 1280);
   });
 }
 const changeName = ref('');
@@ -41,10 +38,6 @@ const { loading: mauLoading, run } = useRequest(changeUsername, {
 </script>
 
 <template>
-  <ElCard shadow="never">
-    <div>Welcome to vhooks!</div>
-  </ElCard>
-
   <ElCard shadow="never">
     <div class="mb12">默认用法</div>
     <ElCard v-loading="loading">
