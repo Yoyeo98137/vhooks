@@ -61,8 +61,13 @@ function useQuery<TData, TParams extends unknown[]>(
     count.value += 1;
     const currentCount = count.value;
 
-    const { ...state } = notifyPluginHook('onBefore', params);
+    const { stopNow = false, ...state } = notifyPluginHook('onBefore', params);
     onBefore?.(args);
+
+    // stop request
+    if (stopNow) {
+      return new Promise(() => {});
+    }
 
     setState({
       loading: true,
