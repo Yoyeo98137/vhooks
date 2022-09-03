@@ -115,7 +115,7 @@ function useQuery<TData, TParams extends unknown[]>(
       return res;
 
       // if Error
-    } catch (error) {
+    } catch (error: any) {
       // prevent run.then when request is canceled
       if (!isSameService(currentCount)) return new Promise(() => {});
       // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作

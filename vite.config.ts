@@ -9,6 +9,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@/packages': resolve(__dirname, 'packages/'),
+      '@/ifType': resolve(__dirname, 'packages/utils/ifType'),
+      '@/lodash': resolve(__dirname, 'packages/utils/lodash'),
     },
   },
 

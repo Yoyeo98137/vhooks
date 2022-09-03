@@ -6,6 +6,7 @@
     "moduleResolution": "Node",
     "strict": true,
     "jsx": "preserve",
+    "suppressImplicitAnyIndexErrors": true,
     "sourceMap": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -14,7 +15,9 @@
     "skipLibCheck": true,
     "types": ["element-plus/global"],
     "paths": {
-      "@/packages": ["./packages"]
+      "@/packages": ["./packages"],
+      "@/ifType": ["./packages/utils/ifType"],
+      "@/lodash": ["./packages/utils/lodash"]
     }
   },
   "include": [
@@ -22,6 +25,10 @@
     "examples/**/*.d.ts",
     "examples/**/*.tsx",
     "examples/**/*.vue",
+
+    "packages/**/*.ts",
+    "packages/**/*.d.ts",
+    "packages/**/*.tsx",
     "packages/**/*.vue"
   ],
   "references": [{ "path": "./tsconfig.node.json" }]
