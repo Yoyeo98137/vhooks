@@ -57,11 +57,16 @@ function useQuery<TData, TParams extends unknown[]>(
     return Object.assign({}, ...res);
   };
 
+  // 通过 `currentCount !== count.value` 的判断
+  // 可以避免快速点击导致的重复请求问题，因为每次触发新请求 runAsync 都会执行 `count.value += 1`
+  // 这就会出现了 请求结束后次数标识 `currentCount`，以及请求之前的次数标识 `count.value` 比对的情况
+  const isSameService = (curCount: number) => curCount === count.value;
+
   const runAsync: (...args: TParams) => Promise<TData> = async (...args) => {
     count.value += 1;
     const currentCount = count.value;
 
-    const { stopNow = false, ...state } = notifyPluginHook('onBefore', params);
+    const { stopNow = false, ...state } = notifyPluginHook('onBefore', args);
     onBefore?.(args);
 
     // stop request
@@ -91,12 +96,9 @@ function useQuery<TData, TParams extends unknown[]>(
 
       const res = await servicePromise;
 
-      if (currentCount !== count.value) {
-        // 避免离开的时候，继续执行了 run.then 完成之后的逻辑
-        // prevent run.then when request is canceled
-        return new Promise(() => {});
-        // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作
-      }
+      // prevent run.then when request is canceled
+      if (!isSameService(currentCount)) return new Promise(() => {});
+      // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作
 
       setState({
         data: res,
@@ -114,12 +116,9 @@ function useQuery<TData, TParams extends unknown[]>(
 
       // if Error
     } catch (error) {
-      if (currentCount !== count.value) {
-        // 避免离开的时候，继续执行了 run.then 完成之后的逻辑
-        // prevent run.then when request is canceled
-        return new Promise(() => {});
-        // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作
-      }
+      // prevent run.then when request is canceled
+      if (!isSameService(currentCount)) return new Promise(() => {});
+      // ! 不能用 `Promise.resolve()` 替换，这需要一个 永远不会结束的 Promise 来避免执行了意外的链式操作
 
       setState({
         error,
@@ -136,7 +135,7 @@ function useQuery<TData, TParams extends unknown[]>(
     }
   };
 
-  // `run` 只是 `runAsync` 的 `catch` 语法糖
+  // `run` 只是 `runAsync().catch` 的语法糖
   const run = (...args: TParams) => {
     runAsync(...args).catch((error) => {
       if (!onError) {
@@ -151,7 +150,7 @@ function useQuery<TData, TParams extends unknown[]>(
       loading: false,
     });
 
-    // this.runPluginHandler('onCancel');
+    notifyPluginHook('onCancel');
   };
 
   const refresh = () => {
