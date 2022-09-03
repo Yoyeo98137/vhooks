@@ -1,5 +1,9 @@
 import useRequestImplement from './useRequestImplement';
-import { useLoadingDelayPlugin, useReadyPlugin } from './plugins';
+import {
+  useLoadingDelayPlugin,
+  useReadyPlugin,
+  useRefreshDepsPlugin,
+} from './plugins';
 import type { Service, Options } from './types';
 
 function useRequest<TData, TParams extends unknown[]>(
@@ -10,6 +14,7 @@ function useRequest<TData, TParams extends unknown[]>(
     // useDebouncePlugin,
     useLoadingDelayPlugin,
     useReadyPlugin,
+    useRefreshDepsPlugin,
 
     // usePollingPlugin,
     // useRefreshOnWindowFocusPlugin,
