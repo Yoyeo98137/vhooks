@@ -35,6 +35,25 @@ const { loading: mauLoading, run } = useRequest(changeUsername, {
     }
   },
 });
+
+// ---------------------- 取消请求
+const cancelName = ref('');
+const {
+  loading: cancelLoading,
+  run: cancelRun,
+  cancel,
+} = useRequest(changeUsername, {
+  manual: true,
+  onSuccess: (result, params) => {
+    if (result.success) {
+      cancelName.value = '';
+      ElMessage({
+        message: `The username was changed to "${params[0]}" !`,
+        type: 'success',
+      });
+    }
+  },
+});
 </script>
 
 <template>
@@ -56,6 +75,23 @@ const { loading: mauLoading, run } = useRequest(changeUsername, {
           <el-button :loading="mauLoading" @click="run(changeName)">{{
             mauLoading ? 'Loading...' : 'Edit'
           }}</el-button>
+        </ElCol>
+      </ElRow>
+    </ElCard>
+  </ElCard>
+
+  <ElCard shadow="never">
+    <div class="mb12">取消请求</div>
+    <ElCard>
+      <ElRow>
+        <ElCol :span="6">
+          <el-input v-model="cancelName" placeholder="Please enter username" />
+        </ElCol>
+        <ElCol :span="12" style="margin-left: 16px">
+          <el-button :loading="cancelLoading" @click="cancelRun(cancelName)">{{
+            cancelLoading ? 'Loading...' : 'Edit'
+          }}</el-button>
+          <el-button @click="cancel">Cancel</el-button>
         </ElCol>
       </ElRow>
     </ElCard>
