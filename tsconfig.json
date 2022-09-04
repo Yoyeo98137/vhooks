@@ -15,6 +15,7 @@
     "skipLibCheck": true,
     "types": ["element-plus/global"],
     "paths": {
+      "@/packages": ["./packages"],
       "@/packages*": ["./packages*"]
     }
   },
