@@ -15,9 +15,7 @@
     "skipLibCheck": true,
     "types": ["element-plus/global"],
     "paths": {
-      "@/packages": ["./packages"],
-      "@/ifType": ["./packages/utils/ifType"],
-      "@/lodash": ["./packages/utils/lodash"]
+      "@/packages*": ["./packages*"]
     }
   },
   "include": [

@@ -7,7 +7,7 @@ import type {
   QueryResult,
   PluginReturn,
 } from './types';
-import type { UnWrapRefObject } from '../../utils/types';
+import type { UnWrapRefObject } from '@/packages/utils/types';
 
 type batchUpdateParams = State<any, any>;
 const batchUpdateRefs = <T extends batchUpdateParams>(oldState: T) => {

@@ -1,5 +1,5 @@
 import type { Ref, WatchSource } from 'vue';
-import type { UnWrapRefObject } from '../../utils/types';
+import type { UnWrapRefObject } from '@/packages/utils/types';
 
 // extends unknown[] -> 因为要给 ...args 定义数组类型（类数组）
 export type Service<TData, TParams extends any[]> = (

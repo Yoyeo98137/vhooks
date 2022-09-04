@@ -1,5 +1,5 @@
 import type { PluginUnRefs } from '../types';
-import type { Nullable, Timeout } from '../../../utils/types';
+import type { Nullable, Timeout } from '@/packages/utils/types';
 
 export const useLoadingDelayPlugin: PluginUnRefs<any, any[]> = (
   fetchInstance,
