@@ -3,6 +3,7 @@ import {
   useLoadingDelayPlugin,
   useReadyPlugin,
   useRefreshDepsPlugin,
+  useDebouncePlugin,
 } from './plugins';
 import type { Service, Options } from './types';
 
@@ -11,7 +12,7 @@ function useRequest<TData, TParams extends unknown[]>(
   options?: Options<TData, TParams>
 ) {
   const basePlugins = [
-    // useDebouncePlugin,
+    useDebouncePlugin,
     useLoadingDelayPlugin,
     useReadyPlugin,
     useRefreshDepsPlugin,
