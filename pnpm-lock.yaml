@@ -6,6 +6,7 @@ specifiers:
   '@vitejs/plugin-vue': ^3.0.3
   cz-customizable: ^6.9.2
   element-plus: ^2.2.15
+  lodash: ^4.17.21
   mockjs: ^1.1.0
   typescript: ^4.6.4
   vite: ^3.0.7
@@ -15,6 +16,7 @@ specifiers:
 
 dependencies:
   element-plus: registry.npmmirror.com/element-plus/2.2.15_vue@3.2.37
+  lodash: registry.npmmirror.com/lodash/4.17.21
   vue: registry.npmmirror.com/vue/3.2.37
 
 devDependencies:
