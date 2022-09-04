@@ -19,9 +19,7 @@ export const useLoadingDelayPlugin: PluginUnRefs<any, any[]> = (
       cancelTimeout();
 
       delayTimer = setTimeout(() => {
-        fetchInstance.setState({
-          loading: true,
-        });
+        fetchInstance.loading.value = true;
       }, loadingDelay);
 
       return {

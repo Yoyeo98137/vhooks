@@ -43,7 +43,7 @@ export type State<TData, TParams> = {
   error: Ref<Error | undefined>;
 };
 
-export interface Action<TData, TParams extends unknown[]> {
+export interface FunctionContext<TData, TParams extends unknown[]> {
   runAsync: (...arg: TParams) => Promise<TData>;
   run: (...arg: TParams) => void;
   cancel: () => void;
@@ -53,17 +53,17 @@ export interface Action<TData, TParams extends unknown[]> {
 }
 
 export type Result<TData, TParams extends unknown[]> = State<TData, TParams> &
-  Action<TData, TParams>;
+  FunctionContext<TData, TParams>;
 
 export type RefPluginImpls<TData, TParams extends unknown[]> = Ref<
   PluginReturn<TData, TParams>[]
 >;
-export type QueryResult<TData, TParams extends unknown[]> = Result<
+export type QueryResult<TData, TParams extends unknown[]> = State<
   TData,
   TParams
 > & {
   pluginImpls: RefPluginImpls<TData, TParams>;
-  setState: (newState: Partial<UnWrapRefObject<State<any, any>>>) => void;
+  context: FunctionContext<TData, TParams>;
 };
 
 // todo 整合一下

@@ -19,12 +19,12 @@ function useRequestImplement<TData, TParams extends any[]>(
     if (!manual) {
       // `queryInstance.params` 配合缓存下的默认执行
       const runParams = queryInstance.params.value || defaultParams;
-      queryInstance.run(...runParams);
+      queryInstance.context.run(...runParams);
     }
   });
 
   onUnmounted(() => {
-    queryInstance.cancel();
+    queryInstance.context.cancel();
   });
 
   return {
@@ -33,12 +33,11 @@ function useRequestImplement<TData, TParams extends any[]>(
     data: queryInstance.data,
     error: queryInstance.error,
 
-    // 用一层 context 包裹确实更有助于区分吧（state、action）
-    runAsync: queryInstance.runAsync,
-    run: queryInstance.run,
-    cancel: queryInstance.cancel,
-    refreshAsync: queryInstance.refreshAsync,
-    refresh: queryInstance.refresh,
+    runAsync: queryInstance.context.runAsync,
+    run: queryInstance.context.run,
+    cancel: queryInstance.context.cancel,
+    refreshAsync: queryInstance.context.refreshAsync,
+    refresh: queryInstance.context.refresh,
   };
 }
 
