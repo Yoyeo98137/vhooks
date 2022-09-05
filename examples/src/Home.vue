@@ -19,6 +19,7 @@ const jumpPage = (name: string) => {
     <ElButton @click="jumpPage('useRequestRefreshDeps')">依赖刷新</ElButton>
     <ElButton @click="jumpPage('useRequestDebounce')">防抖</ElButton>
     <ElButton @click="jumpPage('useRequestThrottle')">节流</ElButton>
+    <ElButton @click="jumpPage('useRequestRetry')">错误重试</ElButton>
   </ElCard>
 </template>
 
