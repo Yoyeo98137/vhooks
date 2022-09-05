@@ -34,6 +34,10 @@ export interface Options<TData, TParams extends any[]> {
 
   // throttle
   throttleWait?: number;
+
+  // retry
+  retryCount?: number;
+  retryInterval?: number;
 }
 
 export type State<TData, TParams> = {
