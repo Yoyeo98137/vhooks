@@ -4,6 +4,7 @@ import LoadingDelay from '@/packages/useRequest/doc/loadingDelay/index.vue';
 import Ready from '@/packages/useRequest/doc/ready/index.vue';
 import RefreshDeps from '@/packages/useRequest/doc/refreshDeps/index.vue';
 import Debounce from '@/packages/useRequest/doc/debounce/index.vue';
+import Throttle from '@/packages/useRequest/doc/throttle/index.vue';
 
 export const routes = [
   { path: '/', name: 'home', component: Home },
@@ -12,4 +13,5 @@ export const routes = [
   { path: '/useRequest/ready', name: 'useRequestReady', component: Ready },
   { path: '/useRequest/refreshDeps', name: 'useRequestRefreshDeps', component: RefreshDeps },
   { path: '/useRequest/debounce', name: 'useRequestDebounce', component: Debounce },
+  { path: '/useRequest/throttle', name: 'useRequestThrottle', component: Throttle },
 ];
