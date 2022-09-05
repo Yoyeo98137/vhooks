@@ -4,6 +4,7 @@ import {
   useReadyPlugin,
   useRefreshDepsPlugin,
   useDebouncePlugin,
+  useThrottlePlugin,
 } from './plugins';
 import type { Service, Options } from './types';
 
@@ -19,8 +20,7 @@ function useRequest<TData, TParams extends unknown[]>(
 
     // usePollingPlugin,
     // useRefreshOnWindowFocusPlugin,
-    // useThrottlePlugin,
-    // useAutoRunPlugin,
+    useThrottlePlugin,
     // useCachePlugin,
     // useRetryPlugin,
   ];
