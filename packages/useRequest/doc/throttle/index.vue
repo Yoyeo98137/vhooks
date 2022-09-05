@@ -4,7 +4,7 @@ import { useRequest } from '@/packages';
 import Mock from 'mockjs';
 
 async function getEmail(search?: string): Promise<string[]> {
-  console.log('debounce getEmail', search);
+  console.log('throttle getEmail', search);
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(Mock.mock({ 'data|5': ['@email'] }).data);
